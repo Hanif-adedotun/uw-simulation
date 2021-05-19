@@ -1,0 +1,19 @@
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php
+
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php?email=hanif.adedotun@gmail.com
+
+# POST http://localhost/uw%20simulation/uw-simulation/api/user.php
+# Content-Type: application/json;
+
+# {
+#      "name": "Hanif Adedotun",
+#      "email": "hanif.dev@gmail.com",
+#      "password": "jdgh45bjd3",
+#      "company": "Utility Ware" 
+# }
+
+#Update user
+GET  http://localhost/uw%20simulation/uw-simulation/api/user.php?edit=hanif.adedotun@gmail.com&field=password&value=hanif_12
+
+#Delete user
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php?delete=hanif.adedotun@gmail.com
