@@ -7,40 +7,74 @@ include 'login.php';
 class DB{
      public function GetUsers($table, $fields){
           include 'login.php';
-          $sql = "SELECT * FROM $table";
-          $res = $con->query($sql);
-          if($res){
-               $output = array();
-               $i = 0;
-                 while($row = mysqli_fetch_assoc($res)){
-                    foreach ($fields as $f){
-                         $output[$i][$f] =  $row[$f];
+          try{
+               $sql = "SELECT * FROM $table";
+               $res = $con->query($sql);
+               if($res){
+                    $output = array();
+                    $i = 0;
+                    while($row = mysqli_fetch_assoc($res)){
+                         foreach ($fields as $f){
+                              $output[$i][$f] =  $row[$f];
+                         }
+                         $i++;
                     }
-                    $i++;
+                    return json_encode($output);
+               }else{
+                    return ParseError($con->error);
                }
+               
+          }catch (\Throwable $e){
+               return ParseError($e);
           }
-          return json_encode($output);
+          
      }
      // Gets the
-     public function GetUser($table, $field, $fields, $data){
+     public function GetUser($table, $field, $fields, $data, $param){
           include 'login.php';
-          $sql = "SELECT * FROM $table WHERE $field = '$data'";
-          $res = $con->query($sql);
-          if(mysqli_num_rows($res) > 0){
-               $out = array();
-               $i = 0;
-                 while($row = mysqli_fetch_assoc($res)){
-                    foreach ($fields as $f){
-                         $out[$i][$f] =  $row[$f];
+
+          try{
+               if($param == false){
+                    $sql = "SELECT * FROM $table WHERE $field = '$data'";
+
+                    $res = $con->query($sql);
+                    if(mysqli_num_rows($res) > 0){
+                         $out = array();
+                         $i = 0;
+                         while($row = mysqli_fetch_assoc($res)){
+                              foreach ($fields as $f){
+                                   $out[$i][$f] =  $row[$f];
+                              }
+                              $i++;
+                         }
+                         return json_encode($out);
+                    }else if(!$res){
+                         return ParseError($con);
+                    }else{
+                         return json_encode(['user'=> NULL]);
                     }
-                    $i++;
+
+               }else{
+                    $sql = "SELECT $param FROM $table WHERE $field = '$data'";
+                    $res = $con->query($sql);
+
+                    if(mysqli_num_rows($res) > 0){
+                         // output data of each row
+                         while($row = mysqli_fetch_assoc($res)) {
+                         $dat = $row[$param];
+                         }
+                         return $dat;
+                    } else {
+                         // return json_encode(['msg'=> NULL]);
+                         http_response_code(500);
+                         return NULL;
+                    }
                }
-               return json_encode($out);
-          }else if(!$res){
-               return ParseError($con);
-          }else{
-               return json_encode(['msg'=> NULL]);
+          }catch (\Throwable $e){
+               return ParseError($e);
           }
+          
+          
           
      }
      public function AddUser($table, $name, $email, $pass, $company){
@@ -68,7 +102,7 @@ class DB{
                if ($conn->query($sql) === TRUE) {
                     return json_encode(['msg'=>'Updated Successfully']);
                   } else {
-                       return ParseError($conn->error);
+                       return ParseError($con->error);
                   }
                
           }catch(\Throwable $e){
@@ -101,6 +135,7 @@ class DB{
 
 
 function ParseError($error){
+     http_response_code(500);
      return json_encode(['error'=> $error]);
 }
 

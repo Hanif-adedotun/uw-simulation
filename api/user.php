@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 
      if (isset($_GET['email'])){//Get developer based on email
           
-          $res = $dataB->GetUser($tb_users, 'email', $tb_users_field, $_GET['email']);
+          $res = $dataB->GetUser($tb_users, 'email', $tb_users_field, $_GET['email'], false);
+          http_response_code(200);
           echo $res;
 
 
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
           }
 
           $upd = $dataB->Update($tb_users, $field, $value, $email);
+          http_response_code(200);
           echo $upd;
      
      }else if(isset($_GET['delete'])){//Delete a user from the database
@@ -34,16 +36,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
           $email = $_GET['delete'];
 
           $del = $dataB->DelUser($tb_users, 'email', $email);
+          http_response_code(200);
           echo $del;
           // echo json_encode(['msg' => 'Server Method is delete, '.$email]);
 
      }else if(isset($_GET['verify'])){//Verify user on the database
-          $email = $_GET['email'];
-          $password = $_GET['password'];
+          $email = $_GET['verify'];
+          $password = $_GET['pass'];
+          
+          if(!empty($email) && !empty($password)){
 
-          // Code to verify user on the database
+               $gethash = $dataB->GetUser($tb_users, 'email', $tb_users_field, $email, 'password');
+
+               if($gethash !== NULL){//If there is no empty data sent
+                    $equal = password_verify($password , $gethash);
+                    http_response_code(200);
+                    if($equal == true){
+                         echo json_encode(['authenticated' => true]);
+                    }else{
+                         echo json_encode(['authenticated' => false]);
+                    }
+
+               }else{
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Error in databse']);
+               }
+          }else{
+               http_response_code(400);
+               echo json_encode(['error' => 'No data in email or password']);
+          }
+          
+
      }else{
           $res = $dataB->GetUsers($tb_users, $tb_users_field);
+          http_response_code(200);
           echo $res;
      }
 
@@ -53,18 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
           $js = json_decode($json, true);
       
           if(empty($js)){//Empty data from db
+               http_response_code(400);
                echo json_encode(['msg' => 'No data sent to Server']);
            }else{
                $name = $js['name'];
                $email = $js['email'];
                $password = password_hash($js['password'], PASSWORD_DEFAULT);
                $company = $js['company'];
-                //  password_verify()
-               
-                // echo $password;
-           
                 
                 $msg = $dataB->AddUser($tb_users, $name, $email, $password, $company);
+                http_response_code(201);
                 echo $msg;
            }            
 }
