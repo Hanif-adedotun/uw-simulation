@@ -15,7 +15,11 @@ if($con->connect_error){
 
 // Table names in the database
 
-// First table
+// First table: User table
 $tb_users = 'users';
-$tb_users_field = array('id', 'name', 'email', 'password', 'company')
+$tb_users_field = array('id', 'name', 'email', 'password', 'company');
+
+// Second table: Apllications table
+$tb_applications = 'applications';
+$tb_app_fields = array('id', 'size', 'version', 'compatibility', 'downloads', 'status', 'age group', 'date of release', 'logo');
 ?>

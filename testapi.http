@@ -25,3 +25,12 @@
 
 # Verify user
 # GET http://localhost/uw%20simulation/uw-simulation/api/user.php?verify=hanif.dev@gmail.com&pass=hanif_12
+
+
+# Applications table Methods
+
+# Get all applications
+# GET http://localhost/uw%20simulation/uw-simulation/api/applications.php
+
+# Add a new application
+POST  http://localhost/uw%20simulation/uw-simulation/api/applications.php

@@ -19,7 +19,12 @@ class DB{
                          }
                          $i++;
                     }
-                    return json_encode($output);
+                    if(!empty($output)){
+                         return json_encode($output);
+                    }else{
+                         return ParseError('Data requested is empty');
+                    }
+                    
                }else{
                     return ParseError($con->error);
                }
@@ -49,7 +54,7 @@ class DB{
                          }
                          return json_encode($out);
                     }else if(!$res){
-                         return ParseError($con);
+                         return ParseError($con->error);
                     }else{
                          return json_encode(['user'=> NULL]);
                     }
