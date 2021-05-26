@@ -3,10 +3,12 @@
 include 'login.php';
 // Create a JSON error parser that converts error to JSON
 // Create an errror logger to file also
-
+include 'tests/recordError.php';
+// recordError()
 class DB{
      public function GetUsers($table, $fields){
           include 'login.php';
+          
           try{
                $sql = "SELECT * FROM $table";
                $res = $con->query($sql);
@@ -26,10 +28,12 @@ class DB{
                     }
                     
                }else{
+                    recordError($con->error); //Enter Error into log file
                     return ParseError($con->error);
                }
                
           }catch (\Throwable $e){
+               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
           
@@ -54,8 +58,10 @@ class DB{
                          }
                          return json_encode($out);
                     }else if(!$res){
+                         recordError($con->error); //Enter Error into log file
                          return ParseError($con->error);
                     }else{
+                         recordError($con->error); //Enter Error into log file
                          return json_encode(['user'=> NULL]);
                     }
 
@@ -72,10 +78,12 @@ class DB{
                     } else {
                          // return json_encode(['msg'=> NULL]);
                          http_response_code(500);
+                         recordError( $con->error); //Enter Error into log file
                          return NULL;
                     }
                }
           }catch (\Throwable $e){
+               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
           
@@ -95,6 +103,7 @@ class DB{
 
           return json_encode(['msg'=>'Inserted Successfully']);
           }catch(\Throwable $e){
+               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
@@ -104,13 +113,15 @@ class DB{
           try{
                $sql = "UPDATE $table SET $field='$value' WHERE email='$email'";
  
-               if ($conn->query($sql) === TRUE) {
+               if ($con->query($sql) === TRUE) {
                     return json_encode(['msg'=>'Updated Successfully']);
                   } else {
+                       recordError($con->error); //Enter Error into log file
                        return ParseError($con->error);
                   }
                
           }catch(\Throwable $e){
+               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
@@ -125,17 +136,46 @@ class DB{
                if($con->query($sql)){
                     return json_encode(['msg' => 'Deleted User Successfully']);
                }else{
+                    recordError($con->error); //Enter Error into log file
                     return ParseError($con->error);
                }
 
           }catch(\Throwable $e){
+               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
 
-     public function testClass($data){
+     private function testClass($data){
           return 'Hello, let me echo your data: '.$data;
      } 
+
+     // Functions perculiar to the table of applications,
+     public function addApp($table, $email){
+          include 'login.php';
+
+          
+          // Get id of the developer
+          $sql = "SELECT id FROM $table WHERE email = '$email'";
+          $res = $con->query($sql);
+
+          if($res && mysqli_num_rows($res) > 0){
+               // output data of each row
+               //  $sql = "SELECT $param FROM $table WHERE $field = '$data'";
+               while($row = mysqli_fetch_assoc($res)){
+                    $data = $row['id'];
+               }
+               // $row = mysqli_fetch_assoc($res);
+               return $data;
+       
+          } else {
+               // return json_encode(['msg'=> NULL]);
+               http_response_code(500);
+               recordError($con->error); //Enter Error into log file
+               return NULL;
+          }
+                    
+     }
 }
 
 
