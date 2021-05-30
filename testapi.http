@@ -30,25 +30,28 @@
 # Applications table Methods
 
 # Get all applications
-# GET http://localhost/uw%20simulation/uw-simulation/api/applications.php
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php
 
 # GET Version of PHP
-# GET http://localhost/uw%20simulation/uw-simulation/api/applications.php?version
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?version
 
 # Add a new application
-POST  http://localhost/uw%20simulation/uw-simulation/api/applications.php
-Content-Type: application/json;
+# POST  http://localhost/uw%20simulation/uw-simulation/api/app.php
+# Content-Type: application/json;
 
-{
-    "email" : "hanif.dev@gmail.com",
-    "size": "5mb",
-    "version": "1.0.3",
-    "compatibility": "Android 6+",
-    "downloads": "116112488",
-    "status": "Published",
-    "age group": "12+",
-    "date of release": "2021-05-25",
-    "logo": "FlyerMaker_11022020_094913.png"
-}
+# {
+#     "email" : "sovam.dev@gmail.com",
+#     "name" : "First Application",
+#     "size": "5mb",
+#     "version": "1.0.3",
+#     "compatibility": "Android 6+",
+#     "downloads": "116112488",
+#     "status": "Published",
+#     "age group": "12+",
+#     "date of release": "2021-05-25",
+#     "logo": "FlyerMaker_11022020_094913.png"
+# }
+
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?logo
 
 

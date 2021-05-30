@@ -13,7 +13,7 @@ function recordError($text){
     if (flock($file, LOCK_EX)){//prevent another user from using the file at the same time
     
        
-       $date_text =  date("l, F jS, Y - G:i:s a", time()).' [Error]: '. $text . ' File('.$_SERVER["REQUEST_URI"].')'. "\n";
+       $date_text =  date("l, F jS, Y - G:i:s a", time()).' [Error]: '. $text .' File('.$_SERVER["REQUEST_URI"].')'. "\n" ."\n";
        fwrite($file, $date_text) or die("Could not write to file");
 
        flock($file, LOCK_UN);//unlocks the file 

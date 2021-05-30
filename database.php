@@ -28,12 +28,10 @@ class DB{
                     }
                     
                }else{
-                    recordError($con->error); //Enter Error into log file
                     return ParseError($con->error);
                }
                
           }catch (\Throwable $e){
-               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
           
@@ -58,7 +56,6 @@ class DB{
                          }
                          return json_encode($out);
                     }else if(!$res){
-                         recordError($con->error); //Enter Error into log file
                          return ParseError($con->error);
                     }else{
                          recordError($con->error); //Enter Error into log file
@@ -78,12 +75,11 @@ class DB{
                     } else {
                          // return json_encode(['msg'=> NULL]);
                          http_response_code(500);
-                         recordError( $con->error); //Enter Error into log file
+                         recordError($con->error); //Enter Error into log file
                          return NULL;
                     }
                }
           }catch (\Throwable $e){
-               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
           
@@ -103,7 +99,6 @@ class DB{
 
           return json_encode(['msg'=>'Inserted Successfully']);
           }catch(\Throwable $e){
-               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
@@ -116,12 +111,10 @@ class DB{
                if ($con->query($sql) === TRUE) {
                     return json_encode(['msg'=>'Updated Successfully']);
                   } else {
-                       recordError($con->error); //Enter Error into log file
                        return ParseError($con->error);
                   }
                
           }catch(\Throwable $e){
-               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
@@ -136,37 +129,36 @@ class DB{
                if($con->query($sql)){
                     return json_encode(['msg' => 'Deleted User Successfully']);
                }else{
-                    recordError($con->error); //Enter Error into log file
                     return ParseError($con->error);
                }
 
           }catch(\Throwable $e){
-               recordError($e); //Enter Error into log file
                return ParseError($e);
           }
      }
 
-     private function testClass($data){
-          return 'Hello, let me echo your data: '.$data;
+     public function echoClass($greet){
+          return $greet;
      } 
 
-     // Functions perculiar to the table of applications,
-     public function addApp($table, $email){
+     // Functions perculiar to the table of applications
+     // ****** MAJOR DIVISION ******
+
+
+     public function addApp($dev_table, $email, $app_table, $name, $logo, $size, $version, $compatibility, $downloads, $status, $age, $dor){
           include 'login.php';
 
-          
+          try{
           // Get id of the developer
-          $sql = "SELECT id FROM $table WHERE email = '$email'";
+          $sql = "SELECT id FROM $dev_table WHERE email = '$email'";
           $res = $con->query($sql);
 
           if($res && mysqli_num_rows($res) > 0){
                // output data of each row
-               //  $sql = "SELECT $param FROM $table WHERE $field = '$data'";
                while($row = mysqli_fetch_assoc($res)){
-                    $data = $row['id'];
+                    $devid = $row['id'];
                }
-               // $row = mysqli_fetch_assoc($res);
-               return $data;
+               // return $devid;
        
           } else {
                // return json_encode(['msg'=> NULL]);
@@ -174,12 +166,61 @@ class DB{
                recordError($con->error); //Enter Error into log file
                return NULL;
           }
+          // return;
+
+          // After getting the id of the developer, insert the id and other details into the database
+          
+           $sql = $con->prepare("INSERT INTO `$app_table` (`name`, `size`, `version`, `compatibility`, `downloads`, `status`, `age group`, `date of release`, `logo`, `developer id`) VALUES (?,?,?,?,?,?,?,?,?,?)");
+           $sql->bind_param('sssssssssi', $name, $size, $version, $compatibility, $downloads, $status, $age, $dor, $logo, $devid);
+          
+           if ($sql->execute() === TRUE) {
+               return json_encode(['msg'=>'Inserted Successfully']);
+          } else {
+               return ParseError($con->error);
+             }
+           
+
+
+     }catch(\Throwable $e){
+          return ParseError($e);
+     }
+          
                     
+     }
+
+     // Get Logo and display in browser
+     public function getLogo($table, $field, $id){
+          include 'login.php';
+
+          try{
+                    $sql = "SELECT $field FROM $table WHERE id = '$id'";
+                    $res = $con->query($sql);
+
+                    if(mysqli_num_rows($res) > 0){
+                         // output data of each row
+                         while($row = mysqli_fetch_assoc($res)) {
+                         $logo = $row[$field];
+                         }
+                         // return json_encode(['logo'=> 'uploads/'.$dat]);
+                         echo '<br>';
+                         echo "<p><img src='uploads/$logo' height='150px' width='300px'></p>";
+
+
+                    } else {
+                         // return json_encode(['msg'=> NULL]);
+                         http_response_code(500);
+                         recordError($con->error); //Enter Error into log file
+                         return NULL;
+                    }
+          }catch(\Throwable $e){
+               recordError($e); //Enter Error into log file
+          }
      }
 }
 
 
 function ParseError($error){
+     recordError($error); //Enter Error into log file
      http_response_code(500);
      return json_encode(['error'=> $error]);
 }
