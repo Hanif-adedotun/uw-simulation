@@ -1,9 +1,9 @@
 <?php
 
-include 'login.php';
+include_once 'login.php';
 // Create a JSON error parser that converts error to JSON
 // Create an errror logger to file also
-include 'tests/recordError.php';
+include_once 'tests/recordError.php';
 // recordError()
 class DB{
      public function GetUsers($table, $fields){
@@ -125,9 +125,10 @@ class DB{
 
           try{
                $sql = "DELETE FROM $table WHERE $id='$email'";
+               $req = $con->query($sql);
 
-               if($con->query($sql)){
-                    return json_encode(['msg' => 'Deleted User Successfully']);
+               if( $req === TRUE){
+                    return json_encode(['msg' => 'Deleted Successfully']);
                }else{
                     return ParseError($con->error);
                }
@@ -214,6 +215,53 @@ class DB{
                     }
           }catch(\Throwable $e){
                recordError($e); //Enter Error into log file
+          }
+     }
+
+     public function getapp($dev_table, $email, $table, $fields){
+          include 'login.php';
+
+          try{
+
+          $sql = "SELECT id FROM $dev_table WHERE email = '$email'";
+          $res = $con->query($sql);
+
+          if($res && mysqli_num_rows($res) > 0){
+               // output data of each row
+               while($row = mysqli_fetch_assoc($res)){
+                    $devid = $row['id'];
+               }
+               // return $devid;
+
+          // Get all applications of the developer
+          $sql = "SELECT * FROM `$table` WHERE `developer id` = '$devid'";
+          $res = $con->query($sql);
+
+          if($res && mysqli_num_rows($res) > 0){
+               $output = array();
+               $i = 0;
+               while($row = mysqli_fetch_assoc($res)){
+                    foreach ($fields as $f){
+                         $output[$i][$f] =  $row[$f];
+                    }
+                    $i++;
+               }
+               if(!empty($output)){
+                    return json_encode($output);
+               }else{
+                    return ParseError('Data requested is empty');
+               }
+          }
+                   
+          } else {
+               // return json_encode(['msg'=> NULL]);
+               http_response_code(500);
+               recordError($con->error); //Enter Error into log file
+               return NULL;
+  
+          }
+          }catch(\Throwable $e){
+               ParseError($con->error);
           }
      }
 }

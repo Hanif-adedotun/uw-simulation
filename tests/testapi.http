@@ -1,0 +1,86 @@
+
+# -----------------------------------
+#     Users table API Methods
+# -----------------------------------
+
+# Authentication from the client
+
+
+# Get all developers from db
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php HTTP/1.1
+# Authorization: Basic Uwsimulation:3n$5tsds
+# Authorization: Basic Uw simulation 3n$5tsds
+
+# Get a particular user from email
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php?email=hanif.dev@gmail.com
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# Add a developer to the database
+# POST http://localhost/uw%20simulation/uw-simulation/api/user.php
+# Content-Type: application/json;
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# {
+#     "name": "Yusuf Yusuf",
+#     "email": "yusf.dev@gmail.com",
+#     "password": "yusuf_1@2",
+#     "company": "Utility Ware"
+# }
+
+
+#Update user
+# GET  http://localhost/uw%20simulation/uw-simulation/api/user.php?edit=hanif.adedotun@gmail.com&field=password&value=hanif_12
+# Authorization: Basic Uwsimulation:3n$5tsds
+ 
+#Delete user
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php?delete=second.dev@gmail.com
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# Verify user
+# GET http://localhost/uw%20simulation/uw-simulation/api/user.php?verify=hanif.dev@gmail.com&pass=hanif_12
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+
+
+# -----------------------------------
+#     Applications table API Methods
+# -----------------------------------
+
+
+# Get all applications
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# GET Version of PHP
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?version
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# # Add a new application
+# POST  http://localhost/uw%20simulation/uw-simulation/api/app.php
+# Content-Type: application/json;
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# {
+#     "email" : "sovam.dev@gmail.com",
+#     "name" : "Second test application",
+#     "size": "50mb",
+#     "version": "2.1.2",
+#     "compatibility": "Android 1-+",
+#     "downloads": "4000000",
+#     "status": "Published",
+#     "age group": "12+",
+#     "date of release": "2021-06-07",
+#     "logo": "hanif_ui.png",
+# }
+
+# Display the logo in html form
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?logo=4
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# Return all the applications of a developer
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?email=hanif.dev@gmail.com
+# Authorization: Basic Uwsimulation:3n$5tsds
+
+# Delete Application
+# GET http://localhost/uw%20simulation/uw-simulation/api/app.php?delete=1
+# Authorization: Basic Uwsimulation:3n$5tsds

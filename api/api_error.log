@@ -30,3 +30,12 @@ Stack trace:
 
 Friday, May 28th, 2021 - 23:14:06 pm [Error]:  File(/uw%20simulation/uw-simulation/api/applications.php)
 
+Monday, May 31st, 2021 - 23:40:16 pm [Error]: Data requested is empty File(/uw%20simulation/uw-simulation%20/api/app.php?email=hanif.dev@gmail.com)
+
+Wednesday, June 2nd, 2021 - 16:27:56 pm [Error]: Column 'size' cannot be null File(/uw%20simulation/uw-simulation/api/app.php)
+
+Thursday, June 10th, 2021 - 18:16:54 pm [Error]: Error: Call to a member function query() on null in C:\xamppp\htdocs\uw simulation\uw-simulation\database.php:14
+Stack trace:
+#0 C:\xamppp\htdocs\uw simulation\uw-simulation\api\user.php(85): DB->GetUsers('users', Array)
+#1 {main} File(/uw%20simulation/uw-simulation/api/user.php)
+

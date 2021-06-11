@@ -1,4 +1,5 @@
 <?php 
+// Msql database connection
 $username = 'utility';
 $password = '6t0lMXHLz02uuNir';
 $port = 'localhost';
@@ -22,4 +23,11 @@ $tb_users_field = array('id', 'name', 'email', 'password', 'company');
 // Second table: Apllications table
 $tb_applications = 'applications';
 $tb_app_fields = array('id', 'size', 'version', 'compatibility', 'downloads', 'status', 'age group', 'date of release', 'logo', 'developer id');
+
+
+
+// Function to authenticate every request to make sure it is coming from the right source
+$authName = 'Uwsimulation';
+$authPW = '3n$5tsds';
+     
 ?>
