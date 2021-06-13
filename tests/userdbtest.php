@@ -20,7 +20,10 @@ class userdbTest extends TestCase{
           $queries = array('email=hanif.dev@gmail.com', 'edit=hanif.dev@gmail.com&field=name&value=Hanif Coder', 'verify=hanif.dev@gmail.com&pass=hanif_12', NULL);
           $i = 0;
           foreach ($queries as $q) {
-               $res = $client->request('GET', $uri, ['query' => $q]);
+               $res = $client->request('GET', $uri, ['query' => $q, 'auth' => [
+                    'Uwsimulation', 
+                    '3n$5tsds'
+                ]]);
                $this->assertEquals(200, $res->getStatusCode());
      
                $contentType = $res->getHeaders()["Content-Type"][0];
@@ -61,7 +64,10 @@ class userdbTest extends TestCase{
 
           $reqBody = array("name"=>"Elon Musk", "email" => "elon@neuralink.com", "password" => "elon1&@2", "company" => "Neuralink");
         
-          $res = $client->request('POST', $uri , ['headers' =>['content-type' => 'application/json'], 'body' => json_encode($reqBody)]);
+          $res = $client->request('POST', $uri , ['headers' =>['content-type' => 'application/json'], 'body' => json_encode($reqBody), 'auth' => [
+               'Uwsimulation', 
+               '3n$5tsds'
+           ]]);
           $body = $res->getBody();
 
           $bodArr = json_decode((string) $body, true);
@@ -78,7 +84,10 @@ class userdbTest extends TestCase{
           $i = 0;
 
           foreach($queries as $q){
-               $res = $client->request('GET', $uri , ['query' => $q]);
+               $res = $client->request('GET', $uri , ['query' => $q, 'auth' => [
+                    'Uwsimulation', 
+                    '3n$5tsds'
+                ]]);
                $this->assertEquals(200, $res->getStatusCode());
           
                // Test the result being given
@@ -123,7 +132,10 @@ class userdbTest extends TestCase{
 
           $reqBody = array( "email" => "sovam.dev@gmail.com", "name" => "Second test application", "size" => "50mb", "version" => "2.1.2", "compatibility" => "Android 10+", "downloads" => "4000000", "status" => "Published", "age group" => "12+", "date of release" => "2021-06-07", "logo" => "hanif_ui.png");
          
-          $res = $client->request('POST', $uri , ['headers' =>['content-type' => 'application/json'],'body' => json_encode($reqBody)]);
+          $res = $client->request('POST', $uri , ['headers' =>['content-type' => 'application/json'],'body' => json_encode($reqBody), 'auth' => [
+               'Uwsimulation', 
+               '3n$5tsds'
+           ]]);
           $body = $res->getBody();
 
           $bodArr = json_decode((string) $body, true);
